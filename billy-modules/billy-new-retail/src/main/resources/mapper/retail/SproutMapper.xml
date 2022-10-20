@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.billy.retail.mapper.billyMapper">
+    <resultMap id="RetailOrderResult" type="com.billy.retail.domain.RetailOrder">
+        <id property="orderId" column="order_id"/>
+        <result property="remark" column="remark"></result>
+        <result property="createdTime" column="created_time"></result>
+        <result property="email" column="email"></result>
+        <result property="name" column="name"/>
+        <result property="title" column="title"/>
+        <collection property="orderItems" ofType="com.billy.retail.domain.RetailOrderItem">
+            <id property="orderItmId" column="orderItmId"/>
+            <result property="orderId" column="orderId"/>
+            <result property="createdTime" column="itm_created_time"/>
+            <result property="price" column="price"/>
+            <result property="skuId" column="sku_id"/>
+        </collection>
+    </resultMap>
+
+    <sql id="selectRetailOrderList">
+        SELECT ro.order_id,ro.`name`,ro.title,ro.created_time,ro.remark,roi.order_itm_id,roi.sku_id,roi.price,roi.created_time as itm_created_time FROM retail_order ro
+        INNER JOIN retail_order_item roi on ro.order_id = roi.order_id
+    </sql>
+
+    <select id="getRetailOrderByid" parameterType="java.lang.Long" resultMap="RetailOrderResult">
+        <include refid="selectRetailOrderList"></include>
+        where ro.order_id = #{orderId}
+    </select>
+
+</mapper>

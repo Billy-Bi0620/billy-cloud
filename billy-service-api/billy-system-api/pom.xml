@@ -1,0 +1,31 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>billy-service-api</artifactId>
+        <groupId>com.billy</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>billy-system-api</artifactId>
+    <packaging>jar</packaging>
+
+    <name>billy-system-api</name>
+    <url>http://maven.apache.org</url>
+
+    <dependencies>
+        <!-- 通用工具 -->
+        <dependency>
+            <groupId>com.billy</groupId>
+            <artifactId>billy-common-core</artifactId>
+            <version>${billy.version}</version>
+        </dependency>
+        <!-- swagger模块 -->
+        <dependency>
+            <groupId>com.billy</groupId>
+            <artifactId>billy-common-swagger</artifactId>
+            <version>${billy.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

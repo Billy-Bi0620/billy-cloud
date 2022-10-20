@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.billy.retail.mapper.RetailOrderItemMapper">
+    
+    <resultMap type="com.billy.retail.domain.RetailOrderItem" id="RetailOrderItemResult">
+        <result property="createdTime"    column="created_time"    />
+        <result property="price"    column="price"    />
+        <result property="skuId"    column="sku_id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="orderItmId"    column="order_itm_id"    />
+    </resultMap>
+
+    <sql id="selectRetailOrderItemVo">
+        select created_time, price, sku_id, order_id, order_itm_id from retail_order_item
+    </sql>
+
+    <select id="selectRetailOrderItemList" parameterType="com.billy.retail.domain.RetailOrderItem" resultMap="RetailOrderItemResult">
+        <include refid="selectRetailOrderItemVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectRetailOrderItemById" parameterType="java.lang.Long" resultMap="RetailOrderItemResult">
+        <include refid="selectRetailOrderItemVo"/>
+        where order_itm_id = #{orderItmId}
+    </select>
+        
+    <insert id="insertRetailOrderItem" parameterType="com.billy.retail.domain.RetailOrderItem" useGeneratedKeys="true" keyProperty="orderItmId">
+        insert into retail_order_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createdTime != null ">created_time,</if>
+            <if test="price != null ">price,</if>
+            <if test="skuId != null ">sku_id,</if>
+            <if test="orderId != null ">order_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createdTime != null ">#{createdTime},</if>
+            <if test="price != null ">#{price},</if>
+            <if test="skuId != null ">#{skuId},</if>
+            <if test="orderId != null ">#{orderId},</if>
+         </trim>
+    </insert>
+
+    <insert id="insertRetailOrderItemBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="orderItmId">
+        insert into retail_order_item(order_id,sku_id,price,created_time)VALUES
+        <foreach collection="list" item="orderItem" separator=",">
+            (#{orderItem.orderId},#{orderItem.skuId},#{orderItem.price},#{orderItem.createdTime})
+        </foreach>
+    </insert>
+
+    <update id="updateRetailOrderItem" parameterType="com.billy.retail.domain.RetailOrderItem">
+        update retail_order_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createdTime != null ">created_time = #{createdTime},</if>
+            <if test="price != null ">price = #{price},</if>
+            <if test="skuId != null ">sku_id = #{skuId},</if>
+            <if test="orderId != null ">order_id = #{orderId},</if>
+        </trim>
+        where order_itm_id = #{orderItmId}
+    </update>
+
+    <delete id="deleteRetailOrderItemById" parameterType="java.lang.Long">
+        delete from retail_order_item where order_itm_id = #{orderItmId}
+    </delete>
+
+    <delete id="deleteRetailOrderItemByIds" parameterType="java.lang.String">
+        delete from retail_order_item where order_itm_id in 
+        <foreach item="orderItmId" collection="array" open="(" separator="," close=")">
+            #{orderItmId}
+        </foreach>
+    </delete>
+    
+</mapper>

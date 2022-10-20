@@ -1,0 +1,25 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>billy</artifactId>
+        <groupId>com.billy</groupId>
+        <version>1.0.0</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>billy-common-auth</artifactId>
+    <packaging>jar</packaging>
+
+    <name>billy-common-auth</name>
+    <url>http://maven.apache.org</url>
+
+    <dependencies>
+        <!-- 系统模块 -->
+        <dependency>
+            <groupId>com.billy</groupId>
+            <artifactId>billy-system-api</artifactId>
+            <version>${billy.version}</version>
+        </dependency>
+    </dependencies>
+</project>

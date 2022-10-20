@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.billy.retail.mapper.RetailOrderMapper">
+
+    <!--主单-->
+    <resultMap type="com.billy.retail.domain.RetailOrder" id="RetailOrderResult">
+        <result property="remark"    column="remark"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="title"    column="title"    />
+        <result property="name"    column="name"    />
+        <result property="orderId"    column="order_id"    />
+    </resultMap>
+
+    <sql id="selectRetailOrderVo">
+        select remark, created_time, title, name, order_id from retail_order
+    </sql>
+
+    <select id="selectRetailOrderList" parameterType="com.billy.retail.domain.RetailOrder" resultMap="RetailOrderResult">
+        <include refid="selectRetailOrderVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectRetailOrderById" parameterType="java.lang.Long" resultMap="RetailOrderResult">
+        <include refid="selectRetailOrderVo"/>
+        where order_id = #{orderId}
+    </select>
+        
+    <insert id="insertRetailOrder" parameterType="com.billy.retail.domain.RetailOrder" useGeneratedKeys="true" keyProperty="orderId">
+        insert into retail_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="createdTime != null ">created_time,</if>
+            <if test="title != null  and title != ''">title,</if>
+            <if test="name != null  and name != ''">name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="remark != null  and remark != ''">#{remark},</if>
+            <if test="createdTime != null ">#{createdTime},</if>
+            <if test="title != null  and title != ''">#{title},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+         </trim>
+    </insert>
+
+
+
+    <update id="updateRetailOrder" parameterType="com.billy.retail.domain.RetailOrder">
+        update retail_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+            <if test="createdTime != null ">created_time = #{createdTime},</if>
+            <if test="title != null  and title != ''">title = #{title},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+        </trim>
+        where order_id = #{orderId}
+    </update>
+
+    <delete id="deleteRetailOrderById" parameterType="java.lang.Long">
+        delete from retail_order where order_id = #{orderId}
+    </delete>
+
+    <delete id="deleteRetailOrderByIds" parameterType="java.lang.String">
+        delete from retail_order where order_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </delete>
+    
+</mapper>
